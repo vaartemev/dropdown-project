@@ -4,39 +4,42 @@ import { render, clearContent } from './render';
 const button = document.querySelector('.button');
 const input = document.querySelector('.field__text');
 const contentList = document.querySelector('.content__list');
-const inputField = document.querySelector('.field');
 
 export const getTextFromListItem = (listItems) => {
-    listItems.forEach((listItem) => {
-        listItem.addEventListener('click', function(){
-            input.value = this.innerText;
-            contentList.classList.remove('active');
-            clearContent();
-        });
-    });
-}
+	listItems.forEach((listItem) => {
+		listItem.addEventListener('click', function () {
+			input.value = this.innerText;
+			input.setAttribute('data-text', this.innerText);
+			contentList.classList.remove('active');
+			clearContent();
+		});
+	});
+};
 
 export const clickOnInputField = () => {
-    inputField.addEventListener('click', (e) => {
-        if(!contentList.classList.contains('active')){
-            data.forEach((item) => render(item.label));
-            button.innerHTML = 'Close';
-            input.value = '';
-            input.focus();
-        } else if(e.target !== input){
-            clearContent();
-            button.innerHTML = 'Open';
-        }
-        
-    });
-    clicker();
-}
+	document.addEventListener('click', function (e) {
+		if (e.target === input || e.target === button) {
+			if (!contentList.classList.contains('active') && !button.classList.contains('active')) {
+				data.forEach((item) => render(item.label));
+				button.innerHTML = 'Close';
+				input.value = '';
+				input.focus();
+			} else {
+				input.removeAttribute('data-text');
+				clearContent();
+			}
+		} else {
+			input.value = input.getAttribute('data-text');
+			clearContent();
+		}
+	}, true);
+};
 
-function clicker() {
-    const listItem = document.querySelector('.content__item');
-    document.addEventListener('click', function(e) {
-        if(e.target !== listItem){
-           clearContent();
-        }
-    }, true);
-}
+window.onscroll = () => {
+	input.value = input.getAttribute('data-text');
+	clearContent();
+};
+window.onresize = () => {
+	input.value = input.getAttribute('data-text');
+	clearContent();
+};
