@@ -68,7 +68,7 @@ body {
 	&:hover{
 		background-color: $green;
 	}
-	&.active{
+	&-active{
 		background-color: $red;
 	}
 }
@@ -84,7 +84,7 @@ body {
 		overflow: hidden;
 		overflow-y: scroll;
 		transition: .4s;
-		&.active{
+		&-active{
 			max-height: 200px;
 			transition: .4s;
 		}
