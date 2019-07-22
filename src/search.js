@@ -3,16 +3,15 @@ import { render, clearContent } from './render';
 const searchField = document.querySelector('.field__text');
 
 export function find(data) {
-	searchField.addEventListener('input', function () {
-        clearContent();
-		const searchValue = this.value.trim();
-        if (searchValue === '') {
-            data.forEach((item) => render(item.label));
-		} else {
-            data.forEach((item) => isInclude(item.label, searchValue) ? render(item.label) : false);
-        }
-	});
+  searchField.addEventListener('input', function({ target: { value } }) {
+    clearContent();
+    const searchValue = value.trim();
+    if (searchValue === '') {
+      data.forEach(({ label }) => render(label));
+    } else {
+      data.forEach(
+        ({ label }) => label.toLowerCase().includes(searchValue.toLowerCase()) && render(label)
+      );
+    }
+  });
 }
-
-const isInclude = (targetValue, searchValue) =>
-	String(targetValue).toLowerCase().indexOf(searchValue.toLowerCase()) !== -1;
